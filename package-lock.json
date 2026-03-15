@@ -1,0 +1,5 @@
+{
+  "name": "BioTrack Pro",
+  "description": "Système complet de suivi de la surveillance environnementale (Zones C/D) avec authentification, import Excel et analyse IA.",
+  "requestFramePermissions": []
+}
