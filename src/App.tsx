@@ -188,7 +188,13 @@ export default function App() {
       .order('date', { ascending: false });
     
     if (data) setMeasurements(data);
-    else if (error) console.error('Error fetching data:', error);
+    else if (error) {
+      console.error('Error fetching data:', error);
+      if (error.code === '42P01') {
+        // Table does not exist
+        console.warn("La table 'measurements' n'existe pas. Veuillez exécuter le script SQL de configuration.");
+      }
+    }
   };
 
   // --- Auth Handlers ---
@@ -212,7 +218,13 @@ export default function App() {
         if (error) throw error;
       }
     } catch (err: any) {
-      alert(err.message);
+      let message = err.message;
+      if (message.includes('Database error saving new user')) {
+        message = "Erreur de base de données lors de l'inscription. Assurez-vous d'avoir exécuté le script SQL de configuration dans votre tableau de bord Supabase.";
+      } else if (message.includes('Email not confirmed')) {
+        message = "Veuillez confirmer votre adresse email avant de vous connecter.";
+      }
+      alert(message);
     } finally {
       setLoading(false);
     }
